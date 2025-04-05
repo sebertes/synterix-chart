@@ -27,15 +27,14 @@ jobs:
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
 
-      - name: Update Chart Version
-        if: ${{ github.event.inputs.version }}
+      - name: Force Chart Changes
         run: |
           sed -i "s/^version: .*/version: ${{ github.event.inputs.version }}/" synterix-central/Chart.yaml
-          echo "Version updated to ${{ github.event.inputs.version }}" > synterix-central/.trigger-release
+          date > synterix-central/.chart-releaser-force
 
-      - name: Validate Chart
+      - name: Package Chart
         run: |
-          helm lint synterix-central/
+          mkdir -p packages
           helm package synterix-central/ -d packages/
 
       - name: Run Helm Chart Releaser
@@ -43,6 +42,6 @@ jobs:
         env:
           CR_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
-          charts_dir: packages/
-          charts_repo_url: https://github.com/${{ github.repository }}
+          charts_dir: packages
           pages_branch: gh-pages
+          skip_existing: false

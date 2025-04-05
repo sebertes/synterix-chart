@@ -20,7 +20,7 @@ Helm chart for deploying Synterix Edge components to Kubernetes clusters with co
 ### Add Helm Repository
 
 ```bash
-helm repo add synterix-edge https://<your-repo-url>
+helm repo add synterix-edge https://chart.synterix.cloud
 helm repo update
 ```
 

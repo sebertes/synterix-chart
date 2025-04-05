@@ -96,6 +96,15 @@ The Central Admin component uses a PersistentVolumeClaim with:
 - Access mode: ReadWriteOnce
 - Default size: 1Gi
 
+## Installation
+
+### Add Helm Repository
+
+```bash
+helm repo add synterix-central https://chart.synterix.cloud
+helm repo update
+```
+
 ## Upgrading
 
 ```bash

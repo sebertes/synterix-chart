@@ -4,7 +4,7 @@
 
 # Namespaces to manage
 # Use "*" for cluster-wide access or provide a list of namespaces
-namespaces: ["comblox", "comblox-test"]
+namespaces: ["test", "test-2"]
 
 # Deployment configuration
 deployment:

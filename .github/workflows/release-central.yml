@@ -1,12 +1,12 @@
 name: Release Synterix Central Helm Chart
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - 'synterix-central/**'
-      - '.github/workflows/release-central.yml'
+  workflow_dispatch:  # 改为手动触发
+    inputs:
+      version:
+        description: 'Chart version (e.g., 1.0.0)'
+        required: true
+        type: string
 
 jobs:
   release:
@@ -26,6 +26,11 @@ jobs:
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
+
+      - name: Update Chart Version (Optional)
+        if: ${{ github.event.inputs.version }}
+        run: |
+            sed -i "s/^version: .*/version: ${{ github.event.inputs.version }}/" synterix-edge/Chart.yaml
 
       - name: Run Helm Chart Releaser
         uses: helm/chart-releaser-action@v1.6.0

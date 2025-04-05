@@ -30,6 +30,7 @@ jobs:
       - name: Force Chart Changes
         run: |
           sed -i "s/^version: .*/version: ${{ github.event.inputs.version }}/" synterix-central/Chart.yaml
+          sed -i "s/^appVersion: .*/appVersion: ${{ github.event.inputs.version }}/" synterix-central/Chart.yaml
           date > synterix-central/.chart-releaser-force
 
       - name: Package Chart
@@ -42,9 +43,8 @@ jobs:
         env:
           CR_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
-          version: ${{ github.event.inputs.version }}
-          skip_packaging: true
-          charts_dir: packages
+          charts_dir: synterix-central
+          packages_dir: packages
           pages_branch: gh-pages
           skip_existing: false
           mark_as_latest: true

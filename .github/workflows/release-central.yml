@@ -1,0 +1,50 @@
+name: Release Synterix Central Chart
+
+on:
+  workflow_dispatch:
+    inputs:
+      central_version:
+        description: 'Synterix Central chart version (e.g., 1.0.0)'
+        required: true
+        type: string
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v3
+        with:
+          version: v3.12.0
+
+      - name: Configure Git
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+
+      - name: Prepare Central Chart
+        run: |
+          sed -i "s/^version: .*/version: ${{ github.event.inputs.central_version }}/" synterix-central/Chart.yaml
+          sed -i "s/^appVersion: .*/appVersion: ${{ github.event.inputs.central_version }}/" synterix-central/Chart.yaml
+          mkdir -p .cr-release-packages
+          helm package synterix-central/ -d .cr-release-packages/
+          echo "Central release ${{ github.event.inputs.central_version }}" > .cr-release-packages/central-release.txt
+          ls -la .cr-release-packages/
+
+      - name: Temporary fix for latest_tag unbound variable bug
+        run: echo "latest_tag=v0.0.0" >> $GITHUB_ENV
+
+      - name: Run Helm Chart Releaser
+        uses: helm/chart-releaser-action@v1.6.0
+        env:
+          CR_TOKEN: ${{ secrets.GH_TOKEN }}
+        with:
+          charts_dir: .
+          pages_branch: gh-pages
+          skip_packaging: false
+          skip_existing: false

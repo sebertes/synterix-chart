@@ -1,12 +1,8 @@
-name: Release Synterix Helm Charts
+name: Release Synterix Edge Chart
 
 on:
   workflow_dispatch:
     inputs:
-      central_version:
-        description: 'Synterix Central chart version (e.g., 1.0.0)'
-        required: true
-        type: string
       edge_version:
         description: 'Synterix Edge chart version (e.g., 1.0.0)'
         required: true
@@ -31,19 +27,11 @@ jobs:
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
 
-      - name: Prepare Central Chart
-        run: |
-          sed -i "s/^version: .*/version: ${{ github.event.inputs.central_version }}/" synterix-central/Chart.yaml
-          sed -i "s/^appVersion: .*/appVersion: ${{ github.event.inputs.central_version }}/" synterix-central/Chart.yaml
-          mkdir -p .cr-release-packages
-          helm package synterix-central/ -d .cr-release-packages/
-          echo "Central release ${{ github.event.inputs.central_version }}" > .cr-release-packages/central-release.txt
-          ls -la .cr-release-packages/
-
       - name: Prepare Edge Chart
         run: |
           sed -i "s/^version: .*/version: ${{ github.event.inputs.edge_version }}/" synterix-edge/Chart.yaml
           sed -i "s/^appVersion: .*/appVersion: ${{ github.event.inputs.edge_version }}/" synterix-edge/Chart.yaml
+          mkdir -p .cr-release-packages
           helm package synterix-edge/ -d .cr-release-packages/
           echo "Edge release ${{ github.event.inputs.edge_version }}" > .cr-release-packages/edge-release.txt
           ls -la .cr-release-packages/

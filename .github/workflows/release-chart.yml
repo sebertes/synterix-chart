@@ -49,7 +49,7 @@ jobs:
           ls -la .cr-release-packages/
 
       - name: Run Helm Chart Releaser
-        uses: helm/chart-releaser-action@v1.7.1
+        uses: helm/chart-releaser-action@v1.6.0
         env:
           CR_TOKEN: ${{ secrets.GH_TOKEN }}
         with:

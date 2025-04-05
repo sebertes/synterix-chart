@@ -37,7 +37,7 @@ jobs:
           sed -i "s/^appVersion: .*/appVersion: ${{ github.event.inputs.central_version }}/" synterix-central/Chart.yaml
           mkdir -p .cr-release-packages
           helm package synterix-central/ -d .cr-release-packages/
-          echo "Central release ${{ github.event.inputs.central_version }}" > .chart-release/central-release.txt
+          echo "Central release ${{ github.event.inputs.central_version }}" > .cr-release-packages/central-release.txt
           ls -la .cr-release-packages/
 
       - name: Prepare Edge Chart
@@ -45,7 +45,7 @@ jobs:
           sed -i "s/^version: .*/version: ${{ github.event.inputs.edge_version }}/" synterix-edge/Chart.yaml
           sed -i "s/^appVersion: .*/appVersion: ${{ github.event.inputs.edge_version }}/" synterix-edge/Chart.yaml
           helm package synterix-edge/ -d .cr-release-packages/
-          echo "Edge release ${{ github.event.inputs.edge_version }}" > .chart-release/edge-release.txt
+          echo "Edge release ${{ github.event.inputs.edge_version }}" > .cr-release-packages/edge-release.txt
           ls -la .cr-release-packages/
 
       - name: Run Helm Chart Releaser
@@ -53,7 +53,7 @@ jobs:
         env:
           CR_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
-          charts_dir: .chart-release
+          charts_dir: .
           pages_branch: gh-pages
           skip_packaging: false
           skip_existing: false

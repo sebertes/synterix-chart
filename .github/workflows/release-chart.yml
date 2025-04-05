@@ -48,6 +48,9 @@ jobs:
           echo "Edge release ${{ github.event.inputs.edge_version }}" > .cr-release-packages/edge-release.txt
           ls -la .cr-release-packages/
 
+      - name: Temporary fix for latest_tag unbound variable bug
+        run: echo "latest_tag=v0.0.0" >> $GITHUB_ENV
+
       - name: Run Helm Chart Releaser
         uses: helm/chart-releaser-action@v1.6.0
         env:

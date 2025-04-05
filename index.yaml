@@ -2,6 +2,20 @@ apiVersion: v1
 entries:
   synterix:
   - apiVersion: v2
+    appVersion: 0.0.2
+    created: "2025-04-05T10:28:10.75683428Z"
+    description: A Helm chart for Synterix deployment
+    digest: 5891f6abc85fc83ab7194c6cd03dea02aef7ebca758c8c40109a9a17ce34db17
+    home: https://synterix.cloud
+    icon: https://i.postimg.cc/D0KV9bWN/logo.png
+    maintainers:
+    - email: synterix@qq.com
+      name: Sebertes
+    name: synterix
+    urls:
+    - https://github.com/sebertes/synterix-chart/releases/download/synterix-0.0.2/synterix-0.0.2.tgz
+    version: 0.0.2
+  - apiVersion: v2
     appVersion: 0.0.1
     created: "2025-04-05T10:24:14.863998652Z"
     description: A Helm chart for Synterix deployment
@@ -17,6 +31,21 @@ entries:
     version: 0.0.1
   synterix-edge:
   - apiVersion: v2
+    appVersion: 0.0.2
+    created: "2025-04-05T10:28:10.896809626Z"
+    description: A Helm chart for Kubernetes to deploy Synterix Edge components
+    digest: 982b3f68c238b726efab7393a367d44f7e4e861e13740ab079135540c34198ca
+    home: https://synterix.cloud
+    icon: https://i.postimg.cc/D0KV9bWN/logo.png
+    maintainers:
+    - email: synterix@qq.com
+      name: Sebertes
+    name: synterix-edge
+    type: application
+    urls:
+    - https://github.com/sebertes/synterix-chart/releases/download/synterix-edge-0.0.2/synterix-edge-0.0.2.tgz
+    version: 0.0.2
+  - apiVersion: v2
     appVersion: 0.0.1
     created: "2025-04-05T10:24:14.984981134Z"
     description: A Helm chart for Kubernetes to deploy Synterix Edge components
@@ -31,4 +60,4 @@ entries:
     urls:
     - https://github.com/sebertes/synterix-chart/releases/download/synterix-edge-0.0.1/synterix-edge-0.0.1.tgz
     version: 0.0.1
-generated: "2025-04-05T10:24:14.984985852Z"
+generated: "2025-04-05T10:28:10.896825285Z"

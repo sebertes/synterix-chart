@@ -32,12 +32,15 @@ jobs:
         run: |
           sed -i "s/^version: .*/version: ${{ github.event.inputs.version }}/" synterix-edge/Chart.yaml
 
+      - name: Validate Chart
+        run: |
+          helm lint synterix-edge/
+          helm package synterix-edge/ -d synterix-edge/
+
       - name: Run Helm Chart Releaser
         uses: helm/chart-releaser-action@v1.6.0
         env:
           CR_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
           charts_dir: synterix-edge
-          chart_repo_url: https://github.com/${{ github.repository }}/releases/download
           pages_branch: gh-pages
-          push: true

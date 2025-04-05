@@ -49,7 +49,7 @@ jobs:
           ls -la .cr-release-packages/
 
       - name: Run Helm Chart Releaser
-        uses: helm/chart-releaser-action@v1.6.0
+        uses: helm/chart-releaser-action@v1.7.1
         env:
           CR_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
@@ -57,10 +57,3 @@ jobs:
           pages_branch: gh-pages
           skip_packaging: false
           skip_existing: false
-
-      - name: Verify Release
-        run: |
-          echo "Released charts:"
-          ls -la .cr-release-packages/
-          echo "Index file:"
-          cat index.yaml || echo "No index file generated"

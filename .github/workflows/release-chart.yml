@@ -48,6 +48,16 @@ jobs:
           echo "Edge release ${{ github.event.inputs.edge_version }}" > .cr-release-packages/edge-release.txt
           ls -la .cr-release-packages/
 
+      - name: Initialize Index if not exists
+        run: |
+          if [ ! -f .cr-index/index.yaml ]; then
+            mkdir -p .cr-index
+            echo "apiVersion: v1
+entries: {}" > .cr-index/index.yaml
+            git add .cr-index/index.yaml
+            git commit -m "Initialize empty index.yaml"
+           fi
+
       - name: Run Helm Chart Releaser
         uses: helm/chart-releaser-action@v1.6.0
         env:

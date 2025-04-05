@@ -1,0 +1,66 @@
+name: Release Synterix Helm Charts
+
+on:
+  workflow_dispatch:
+    inputs:
+      central_version:
+        description: 'Synterix Central chart version (e.g., 1.0.0)'
+        required: true
+        type: string
+      edge_version:
+        description: 'Synterix Edge chart version (e.g., 1.0.0)'
+        required: true
+        type: string
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v3
+        with:
+          version: v3.12.0
+
+      - name: Configure Git
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+
+      - name: Prepare Central Chart
+        run: |
+          sed -i "s/^version: .*/version: ${{ github.event.inputs.central_version }}/" synterix-central/Chart.yaml
+          sed -i "s/^appVersion: .*/appVersion: ${{ github.event.inputs.central_version }}/" synterix-central/Chart.yaml
+          mkdir -p .cr-release-packages
+          helm package synterix-central/ -d .cr-release-packages/
+          echo "Central release ${{ github.event.inputs.central_version }}" > .chart-release/central-release.txt
+          ls -la .cr-release-packages/
+
+      - name: Prepare Edge Chart
+        run: |
+          sed -i "s/^version: .*/version: ${{ github.event.inputs.edge_version }}/" synterix-edge/Chart.yaml
+          sed -i "s/^appVersion: .*/appVersion: ${{ github.event.inputs.edge_version }}/" synterix-edge/Chart.yaml
+          helm package synterix-edge/ -d .cr-release-packages/
+          echo "Edge release ${{ github.event.inputs.edge_version }}" > .chart-release/edge-release.txt
+          ls -la .cr-release-packages/
+
+      - name: Run Helm Chart Releaser
+        uses: helm/chart-releaser-action@v1.6.0
+        env:
+          CR_TOKEN: ${{ secrets.GH_TOKEN }}
+        with:
+          charts_dir: .chart-release
+          pages_branch: gh-pages
+          skip_packaging: false
+          skip_existing: false
+
+      - name: Verify Release
+        run: |
+          echo "Released charts:"
+          ls -la .cr-release-packages/
+          echo "Index file:"
+          cat index.yaml || echo "No index file generated"

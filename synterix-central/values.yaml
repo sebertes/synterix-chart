@@ -15,7 +15,7 @@ rbac:
 
 # Central Gateway configuration
 centralGateway:
-  image: 192.168.0.164/synterix/synterix-central-gateway
+  image: sebertes/synterix-central-gateway
   tag: master
   port: 7089
   resources:
@@ -28,7 +28,7 @@ centralGateway:
 
 # Kube Proxy configuration
 kubeProxy:
-  image: 192.168.0.164/synterix/synterix-kube-proxy
+  image: sebertes/synterix-kube-proxy
   tag: master
   port: 7014
   resources:
@@ -41,7 +41,7 @@ kubeProxy:
 
 # Central Admin configuration
 centralAdmin:
-  image: 192.168.0.164/synterix/synterix-central-admin
+  image: sebertes/synterix-central-admin
   tag: master
   port: 7088
   dbPath: "/synterix/synterix.db"
@@ -59,7 +59,7 @@ centralAdmin:
 ingress:
   enabled: true
   className: "nginx"
-  host: "yuntuops.bjttsx.com"
+  host: "your-domain.com"
   path: "/synterix/(.*)"
   annotations:
     nginx.ingress.kubernetes.io/affinity: cookie

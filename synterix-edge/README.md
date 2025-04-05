@@ -52,12 +52,12 @@ helm install synterix-edge synterix-edge/synterix-edge -f custom-values.yaml
 
 | Parameter                    | Description                                               | Default                                                        |
 |------------------------------|-----------------------------------------------------------|----------------------------------------------------------------|
-| `namespaces`                 | List of namespaces to manage (use `"*"` for cluster-wide) | `["comblox","comblox-test"]`                                   |
+| `namespaces`                 | List of namespaces to manage (use `"*"` for cluster-wide) | `["test","test-2"]`                                            |
 | `deployment.replicaCount`    | Number of replicas                                        | `1`                                                            |
 | `deployment.image.gateway`   | Gateway image configuration                               | `repository: sebertes/synterix-central-gateway`, `tag: latest` |
 | `deployment.image.proxy`     | Proxy image configuration                                 | `repository: sebertes/synterix-kube-proxy`, `tag: latest`      |
 | `deployment.resources.proxy` | Resource limits for proxy container                       | See [values.yaml](values.yaml)                                 |
-| `gateway.url`                | Gateway connection URL                                    | `"wss://yuntuops.bjttsx.com:443/synterix/gateway"`             |
+| `gateway.url`                | Gateway connection URL                                    | `"wss://your-domain.com:443/synterix/gateway"`                 |
 | `gateway.token`              | Edge authentication token                                 | `"oWSGibL0fLWMlyzTc3ybdi3t1rbQjj"`                             |
 | `gateway.edgeId`             | Edge identifier                                           | `"1780350654385859692002162"`                                  |
 | `service.type`               | Kubernetes Service type                                   | `ClusterIP`                                                    |

@@ -55,20 +55,20 @@ helm install synterix synterix/synterix \
 | `global.secret.data` | Base64 encoded secret value | `c2VjcmV0` ("secret") |
 | `serviceAccount.name` | ServiceAccount name | `synterix-central-account` |
 | `rbac.bindingName` | ClusterRoleBinding name | `synterix-central-account-binding` |
-| `centralGateway.image` | Central Gateway image | `192.168.0.164/synterix/synterix-central-gateway` |
+| `centralGateway.image` | Central Gateway image | `sebertes/synterix-central-gateway` |
 | `centralGateway.tag` | Image tag | `master` |
 | `centralGateway.port` | Service port | `7089` |
-| `kubeProxy.image` | Kube Proxy image | `192.168.0.164/synterix/synterix-kube-proxy` |
+| `kubeProxy.image` | Kube Proxy image | `sebertes/synterix-kube-proxy` |
 | `kubeProxy.tag` | Image tag | `master` |
 | `kubeProxy.port` | Service port | `7014` |
-| `centralAdmin.image` | Central Admin image | `192.168.0.164/synterix/synterix-central-admin` |
+| `centralAdmin.image` | Central Admin image | `sebertes/synterix-central-admin` |
 | `centralAdmin.tag` | Image tag | `master` |
 | `centralAdmin.port` | Service port | `7088` |
 | `centralAdmin.dbPath` | Database path | `"/synterix/synterix.db"` |
 | `centralAdmin.storage.size` | PVC storage size | `1Gi` |
 | `ingress.enabled` | Enable Ingress | `true` |
 | `ingress.className` | Ingress class | `nginx` |
-| `ingress.host` | Ingress host | `yuntuops.bjttsx.com` |
+| `ingress.host` | Ingress host | `your-domain.com` |
 | `ingress.path` | Ingress path | `/synterix/(.*)` |
 
 See [values.yaml](values.yaml) for all available options.

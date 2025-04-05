@@ -35,8 +35,9 @@ jobs:
 
       - name: Package Chart
         run: |
-          mkdir -p packages
-          helm package synterix-central/ -d packages/
+          mkdir -p .cr-release-packages
+          helm package synterix-central/ -d .cr-release-packages/
+          ls -la .cr-release-packages/
 
       - name: Run Helm Chart Releaser
         uses: helm/chart-releaser-action@v1.6.0

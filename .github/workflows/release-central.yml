@@ -26,6 +26,8 @@ jobs:
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+          git fetch origin gh-pages:gh-pages || true
 
       - name: Force Chart Changes
         run: |
@@ -45,7 +47,6 @@ jobs:
           CR_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
           charts_dir: .
-          packages_dir: packages
           pages_branch: gh-pages
           skip_packaging: false
           skip_existing: false

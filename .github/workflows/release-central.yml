@@ -1,7 +1,7 @@
 name: Release Synterix Central Helm Chart
 
 on:
-  workflow_dispatch:  # 改为手动触发
+  workflow_dispatch:
     inputs:
       version:
         description: 'Chart version (e.g., 1.0.0)'
@@ -27,20 +27,22 @@ jobs:
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
 
-      - name: Update Chart Version (Optional)
+      - name: Update Chart Version
         if: ${{ github.event.inputs.version }}
         run: |
-            sed -i "s/^version: .*/version: ${{ github.event.inputs.version }}/" synterix-central/Chart.yaml
+          sed -i "s/^version: .*/version: ${{ github.event.inputs.version }}/" synterix-central/Chart.yaml
+          echo "Version updated to ${{ github.event.inputs.version }}" > synterix-central/.trigger-release
 
       - name: Validate Chart
         run: |
           helm lint synterix-central/
-          helm package synterix-central/ -d synterix-central/
+          helm package synterix-central/ -d packages/
 
       - name: Run Helm Chart Releaser
         uses: helm/chart-releaser-action@v1.6.0
         env:
           CR_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
-          charts_dir: synterix-central
+          charts_dir: packages/
+          charts_repo_url: https://github.com/${{ github.repository }}
           pages_branch: gh-pages

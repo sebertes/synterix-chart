@@ -43,8 +43,9 @@ jobs:
         env:
           CR_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
-          charts_dir: synterix-central
+          charts_dir: .
           packages_dir: packages
           pages_branch: gh-pages
+          skip_packaging: false
           skip_existing: false
           mark_as_latest: true

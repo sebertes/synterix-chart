@@ -1,6 +1,6 @@
 apiVersion: v2
 name: synterix-central
-description: A Helm chart for Synterix deployment
+description: A Helm chart for Kubernetes to deploy Synterix Central components
 version: 0.1.0
 appVersion: "1.0"
 home: https://synterix.cloud

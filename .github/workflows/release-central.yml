@@ -27,20 +27,24 @@ jobs:
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
 
-      - name: Prepare Release
+      - name: Force Chart Changes
         run: |
           sed -i "s/^version: .*/version: ${{ github.event.inputs.version }}/" synterix-central/Chart.yaml
-          mkdir -p .chart-releaser-packages
-          helm package synterix-central/ -d .chart-releaser-packages/
-          git add .
-          git commit -m "Force release v${{ github.event.inputs.version}}" || echo "No changes to commit"
+          date > synterix-central/.chart-releaser-force
+
+      - name: Package Chart
+        run: |
+          mkdir -p packages
+          helm package synterix-central/ -d packages/
 
       - name: Run Helm Chart Releaser
         uses: helm/chart-releaser-action@v1.6.0
         env:
           CR_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
-          charts_dir: .chart-releaser-packages
+          version: ${{ github.event.inputs.version }}
+          skip_packaging: true
+          charts_dir: packages
           pages_branch: gh-pages
           skip_existing: false
-          force: true
+          mark_as_latest: true

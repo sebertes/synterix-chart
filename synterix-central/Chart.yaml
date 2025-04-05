@@ -1,5 +1,5 @@
 apiVersion: v2
-name: synterix
+name: synterix-central
 description: A Helm chart for Synterix deployment
 version: 0.1.0
 appVersion: "1.0"

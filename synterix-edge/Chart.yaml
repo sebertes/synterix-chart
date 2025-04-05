@@ -1,0 +1,11 @@
+apiVersion: v2
+name: synterix-edge
+description: A Helm chart for Kubernetes to deploy Synterix Edge components
+type: application
+version: 0.1.0
+appVersion: "1.0"
+home: https://synterix.cloud
+icon: https://i.postimg.cc/D0KV9bWN/logo.png
+maintainers:
+  - name: Sebertes
+    email: synterix@qq.com

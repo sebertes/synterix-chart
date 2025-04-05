@@ -1,0 +1,6 @@
+{{- if eq (first .Values.namespaces) "*" }}
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: synterix-edge
+{{- end }}

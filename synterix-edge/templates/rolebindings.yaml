@@ -1,0 +1,30 @@
+{{- if eq (first .Values.namespaces) "*" }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "synterix-edge.fullname" . }}-permission
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "synterix-edge.fullname" . }}-account
+    namespace: synterix-edge
+roleRef:
+  kind: ClusterRole
+  name: {{ include "synterix-edge.fullname" . }}-role
+  apiGroup: rbac.authorization.k8s.io
+{{- else }}
+{{- range $namespace := .Values.namespaces }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "synterix-edge.fullname" $ }}-{{ $namespace }}-permission
+  namespace: {{ $namespace }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "synterix-edge.fullname" $ }}-account
+    namespace: {{ first $.Values.namespaces }}
+roleRef:
+  kind: ClusterRole
+  name: {{ include "synterix-edge.fullname" $ }}-role
+  apiGroup: rbac.authorization.k8s.io
+{{- end }}
+{{- end }}

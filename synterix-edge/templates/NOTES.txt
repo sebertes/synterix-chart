@@ -1,0 +1,48 @@
+{{- if eq (first .Values.namespaces) "*" }}
+Synterix Edge has been deployed with cluster-wide access.
+
+The following components have been created:
+- Namespace: synterix-edge
+- ServiceAccount: {{ include "synterix-edge.fullname" . }}-account in synterix-edge namespace
+- ClusterRole: {{ include "synterix-edge.fullname" . }}-role with cluster-admin permissions
+- ClusterRoleBinding granting cluster-admin to the service account
+{{- else }}
+Synterix Edge has been deployed with access to the following namespaces:
+{{- range .Values.namespaces }}
+- {{ . }}
+{{- end }}
+
+The following components have been created:
+- ServiceAccount: {{ include "synterix-edge.fullname" . }}-account in {{ first .Values.namespaces }} namespace
+- ClusterRole: {{ include "synterix-edge.fullname" . }}-role with admin permissions
+- RoleBindings in each specified namespace
+{{- end }}
+
+Deployment Details:
+- Application is running in namespace: {{ include "synterix-edge.targetNamespace" . }}
+- Pod name: {{ include "synterix-edge.fullname" . }}-*
+- Service name: {{ include "synterix-edge.fullname" . }}
+
+{{- if .Values.service.type | eq "ClusterIP" }}
+To access the Synterix Edge Gateway:
+1. Port-forward to the service:
+   kubectl port-forward svc/{{ include "synterix-edge.fullname" . }} {{ .Values.service.ports.gateway.port }}:{{ .Values.service.ports.gateway.port }} -n {{ include "synterix-edge.targetNamespace" . }}
+   
+2. Access the gateway at: http://localhost:{{ .Values.service.ports.gateway.port }}
+{{- end }}
+
+Configuration Verification:
+1. Check pod status:
+   kubectl get pods -n {{ include "synterix-edge.targetNamespace" . }}
+
+2. Verify service account permissions:
+   kubectl auth can-i --list --as=system:serviceaccount:{{ include "synterix-edge.targetNamespace" . }}:{{ include "synterix-edge.fullname" . }}-account
+
+{{- if eq (first .Values.namespaces) "*" }}
+NOTE: This installation has cluster-admin privileges. Use with caution in production environments.
+{{- else }}
+NOTE: The service account has full access to the following namespaces only:
+{{- range .Values.namespaces }}
+- {{ . }}
+{{- end }}
+{{- end }}

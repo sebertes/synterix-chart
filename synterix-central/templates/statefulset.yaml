@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  namespace: {{ .Values.global.namespace }}
+  name: synterix-central-admin
+spec:
+  serviceName: synterix-central-admin
+  replicas: 1
+  selector:
+    matchLabels:
+      app: synterix-central-admin
+  template:
+    metadata:
+      labels:
+        app: synterix-central-admin
+    spec:
+      serviceAccountName: {{ .Values.serviceAccount.name }}
+      containers:
+        - name: synterix-central-admin-container
+          image: "{{ .Values.centralAdmin.image }}:{{ .Values.centralAdmin.tag }}"
+          imagePullPolicy: Always
+          ports:
+            - containerPort: {{ .Values.centralAdmin.port }}
+          env:
+            - name: SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.global.secret.name }}
+                  key: secret
+            - name: DBPATH
+              value: {{ .Values.centralAdmin.dbPath }}
+          volumeMounts:
+            - name: synterix-data-pvc
+              mountPath: /synterix
+          resources:
+{{ toYaml .Values.centralAdmin.resources | indent 12 }}
+  volumeClaimTemplates:
+    - metadata:
+        name: synterix-data-pvc
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: {{ .Values.centralAdmin.storage.size }}

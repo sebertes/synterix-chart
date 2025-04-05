@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: {{ include "synterix-edge.targetNamespace" . }}
+  name: {{ include "synterix-edge.fullname" . }}
+  labels:
+    {{- include "synterix-edge.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  selector:
+    {{- include "synterix-edge.selectorLabels" . | nindent 4 }}
+  ports:
+    - name: edge-gateway-port
+      protocol: TCP
+      port: {{ .Values.service.ports.gateway.port }}
+      targetPort: {{ .Values.service.ports.gateway.targetPort }}

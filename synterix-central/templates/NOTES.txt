@@ -1,0 +1,37 @@
+Thank you for installing {{ .Chart.Name }} version {{ .Chart.Version }}.
+
+Your Synterix deployment is now running in the {{ .Values.global.namespace }} namespace.
+
+1. Access the Synterix Central Gateway:
+   - Ingress URL: https://{{ .Values.ingress.host }}{{ .Values.ingress.path | replace "(.*)" "" }}
+   {{- if not .Values.ingress.enabled }}
+   (Note: Ingress is currently disabled in your configuration)
+   {{- end }}
+
+2. Central Admin Service:
+   - ClusterIP: synterix-central-admin.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.centralAdmin.port }}
+   - Headless Service: synterix-central-admin-headless.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.centralAdmin.port }}
+
+3. Central Gateway Service:
+   - ClusterIP: synterix-central.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.centralGateway.port }}
+
+4. To verify your deployment:
+   kubectl get pods,svc,ingress -n {{ .Values.global.namespace }}
+
+5. Database Storage:
+   - Persistent Volume Claim: {{ include "synterix.fullname" . }}-synterix-data-pvc
+   - Storage Size: {{ .Values.centralAdmin.storage.size }}
+
+6. Configuration Secrets:
+   - Secret Name: {{ .Values.global.secret.name }}
+
+{{- if .Values.ingress.enabled }}
+7. Ingress Annotations:
+   {{- range $key, $value := .Values.ingress.annotations }}
+   - {{ $key }}: {{ $value }}
+   {{- end }}
+{{- end }}
+
+For more information, please visit:
+- Documentation: [Your Documentation URL]
+- Support: [Your Support Contact]

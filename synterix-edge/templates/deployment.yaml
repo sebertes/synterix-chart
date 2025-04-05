@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: {{ include "synterix-edge.targetNamespace" . }}
+  name: {{ include "synterix-edge.fullname" . }}
+  labels:
+    {{- include "synterix-edge.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.deployment.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "synterix-edge.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "synterix-edge.selectorLabels" . | nindent 8 }}
+    spec:
+      serviceAccountName: {{ include "synterix-edge.fullname" . }}-account
+      containers:
+        - name: synterix-edge-gateway-container
+          image: "{{ .Values.deployment.image.gateway.repository }}:{{ .Values.deployment.image.gateway.tag }}"
+          imagePullPolicy: {{ .Values.deployment.image.gateway.pullPolicy }}
+          ports:
+            - containerPort: 7088
+          env:
+            - name: GATEWAY_URL
+              value: {{ .Values.gateway.url | quote }}
+            - name: EDGE_TOKEN
+              value: {{ .Values.gateway.token | quote }}
+            - name: EDGE_ID
+              value: {{ .Values.gateway.edgeId | quote }}
+        - name: synterix-kube-proxy-container
+          image: "{{ .Values.deployment.image.proxy.repository }}:{{ .Values.deployment.image.proxy.tag }}"
+          imagePullPolicy: {{ .Values.deployment.image.proxy.pullPolicy }}
+          ports:
+            - containerPort: 7014
+          env:
+            - name: NAMESPACES
+              value: {{ join "," .Values.namespaces | quote }}
+          resources:
+            {{- toYaml .Values.deployment.resources.proxy | nindent 12 }}
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always

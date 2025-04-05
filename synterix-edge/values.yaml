@@ -1,0 +1,42 @@
+# Default values for synterix-edge.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# Namespaces to manage
+# Use "*" for cluster-wide access or provide a list of namespaces
+namespaces: ["comblox", "comblox-test"]
+
+# Deployment configuration
+deployment:
+  replicaCount: 1
+  image:
+    gateway:
+      repository: sebertes/synterix-central-gateway
+      tag: latest
+      pullPolicy: Always
+    proxy:
+      repository: sebertes/synterix-kube-proxy
+      tag: latest
+      pullPolicy: Always
+  resources:
+    proxy:
+      requests:
+        memory: "256Mi"
+        cpu: "200m"
+      limits:
+        memory: "512Mi"
+        cpu: "500m"
+
+# Gateway configuration
+gateway:
+  url: "wss://yuntuops.bjttsx.com:443/synterix/gateway"
+  token: "oWSGibL0fLWMlyzTc3ybdi3t1rbQjj"
+  edgeId: "1780350654385859692002162"
+
+# Service configuration
+service:
+  type: ClusterIP
+  ports:
+    gateway:
+      port: 7088
+      targetPort: 7088

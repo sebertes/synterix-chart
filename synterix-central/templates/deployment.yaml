@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: synterix-central
+  namespace: {{ .Values.global.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: synterix-central
+  template:
+    metadata:
+      labels:
+        app: synterix-central
+    spec:
+      serviceAccountName: {{ .Values.serviceAccount.name }}
+      containers:
+        - name: synterix-central-gateway-container
+          image: "{{ .Values.centralGateway.image }}:{{ .Values.centralGateway.tag }}"
+          imagePullPolicy: Always
+          ports:
+            - containerPort: {{ .Values.centralGateway.port }}
+          env:
+            - name: SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.global.secret.name }}
+                  key: secret
+          resources:
+{{ toYaml .Values.centralGateway.resources | indent 12 }}
+        - name: synterix-kube-proxy-container
+          image: "{{ .Values.kubeProxy.image }}:{{ .Values.kubeProxy.tag }}"
+          imagePullPolicy: Always
+          ports:
+            - containerPort: {{ .Values.kubeProxy.port }}
+          resources:
+{{ toYaml .Values.kubeProxy.resources | indent 12 }}
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always

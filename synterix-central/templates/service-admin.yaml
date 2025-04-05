@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: {{ .Values.global.namespace }}
+  name: synterix-central-admin-headless
+spec:
+  clusterIP: None
+  selector:
+    app: synterix-central-admin
+  ports:
+    - port: {{ .Values.centralAdmin.port }}
+      targetPort: {{ .Values.centralAdmin.port }}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: {{ .Values.global.namespace }}
+  name: synterix-central-admin
+spec:
+  type: ClusterIP
+  selector:
+    app: synterix-central-admin
+  ports:
+    - port: {{ .Values.centralAdmin.port }}
+      targetPort: {{ .Values.centralAdmin.port }}

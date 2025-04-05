@@ -2,6 +2,20 @@ apiVersion: v1
 entries:
   synterix-central:
   - apiVersion: v2
+    appVersion: 0.1.2
+    created: "2025-04-05T15:34:51.512065176Z"
+    description: A Helm chart for Kubernetes to deploy Synterix Central components
+    digest: 2b2838093e8dff6e2c3876e8a2b57831884ee57b7a27a3068d9b5f7a910bfacf
+    home: https://synterix.cloud
+    icon: https://i.postimg.cc/D0KV9bWN/logo.png
+    maintainers:
+    - email: synterix@qq.com
+      name: Sebertes
+    name: synterix-central
+    urls:
+    - https://github.com/sebertes/synterix-chart/releases/download/synterix-central-0.1.2/synterix-central-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
     appVersion: 0.1.0
     created: "2025-04-05T14:43:57.457311372Z"
     description: A Helm chart for Kubernetes to deploy Synterix Central components
@@ -60,4 +74,4 @@ entries:
     urls:
     - https://github.com/sebertes/synterix-chart/releases/download/synterix-edge-0.0.1/synterix-edge-0.0.1.tgz
     version: 0.0.1
-generated: "2025-04-05T14:44:06.962835615Z"
+generated: "2025-04-05T15:34:51.512102195Z"
